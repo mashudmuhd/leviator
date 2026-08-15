@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useBottleVariant } from '../hooks/useBottleVariant';
 import { useCart } from '../hooks/useCart';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { NoteBadge } from '../components/ui/NoteBadge';
-import { SceneCanvas } from '../scenes/SceneCanvas';
-import { ShoppingBag, Sparkles, Check, ChevronRight } from 'lucide-react';
+import { PerfumeBottle3D } from '../scenes/PerfumeBottle3D';
+import { ShoppingBag, Check, ChevronRight, Rotate3D } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const ProductPage: React.FC = () => {
@@ -34,11 +33,12 @@ export const ProductPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left 3D Interactive Bottle Canvas */}
-        <div className="lg:col-span-7 h-[500px] sm:h-[600px] glass-panel rounded-3xl relative overflow-hidden border border-white/10 shadow-2xl">
-          <SceneCanvas activeVariant={activeVariant} />
-          <div className="absolute bottom-6 left-6 glass-pill px-4 py-2 rounded-full text-xs text-neutral-300 pointer-events-none">
-            3D Studio View — Drag to inspect flacon
+        {/* Left 3D Interactive Bottle Canvas (PerfumeBottle3D) */}
+        <div className="lg:col-span-7 h-[520px] sm:h-[620px] glass-panel rounded-3xl relative overflow-hidden border border-white/10 shadow-2xl">
+          <PerfumeBottle3D activeVariant={activeVariant} />
+          <div className="absolute bottom-6 left-6 glass-pill px-4 py-2 rounded-full text-xs text-neutral-300 pointer-events-none flex items-center gap-2">
+            <Rotate3D className="w-4 h-4 text-brand-gold animate-spin-slow" />
+            <span>Interactive 3D Studio — Drag / touch to spin flacon</span>
           </div>
         </div>
 
@@ -73,18 +73,25 @@ export const ProductPage: React.FC = () => {
               {variants.map((v) => (
                 <button
                   key={v.id}
-                  onClick={() => setVariantId(v.id)}
+                  disabled={v.isComingSoon}
+                  onClick={() => !v.isComingSoon && setVariantId(v.id)}
                   className={`p-3 rounded-xl text-left border text-xs font-medium transition-all flex items-center gap-2.5 ${
-                    v.id === activeVariant.id
+                    v.isComingSoon
+                      ? 'opacity-40 cursor-not-allowed border-white/5'
+                      : v.id === activeVariant.id
                       ? 'border-brand-gold bg-brand-gold/20 text-white shadow-glow-gold'
                       : 'border-white/10 glass-pill text-neutral-400 hover:text-white'
                   }`}
                 >
-                  <span
-                    className="w-3.5 h-3.5 rounded-full border border-white/30 shrink-0"
-                    style={{ backgroundColor: v.liquidColor }}
+                  <img
+                    src={v.imageFallback}
+                    alt={v.name}
+                    className="w-5 h-5 rounded-full object-cover border border-white/30"
                   />
-                  <span className="truncate">{v.name}</span>
+                  <div className="overflow-hidden">
+                    <span className="truncate block font-semibold">{v.name}</span>
+                    {v.isComingSoon && <span className="text-[9px] text-brand-gold">Coming Soon</span>}
+                  </div>
                 </button>
               ))}
             </div>
