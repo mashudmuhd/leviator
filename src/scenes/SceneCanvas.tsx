@@ -25,7 +25,6 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
   useEffect(() => {
     if (isReducedMotion || !groupRef.current) return;
 
-    // Define scroll timeline steps mapping to 5 HTML sections
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -34,7 +33,6 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
           end: 'bottom bottom',
           scrub: 1.2,
           onUpdate: (self) => {
-            // Update active section index based on scroll progress
             const index = Math.min(4, Math.floor(self.progress * 5));
             setActiveSectionIndex(index);
           },
@@ -71,7 +69,7 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
         ease: 'power2.inOut',
       }, '<');
 
-      // Section 2 -> Section 3 (Craftsmanship Top Cap Close-up)
+      // Section 2 -> Section 3 (Craftsmanship Close-up)
       tl.to(groupRef.current.position, {
         x: 0,
         y: -1.2,
@@ -86,7 +84,7 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
         ease: 'power2.inOut',
       }, '<');
 
-      // Section 3 -> Section 4 (Buy Section Grand Finale Center)
+      // Section 3 -> Section 4 (Buy Section Finale)
       tl.to(groupRef.current.position, {
         x: 0,
         y: -0.1,
@@ -95,7 +93,7 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
         ease: 'power2.inOut',
       }).to(groupRef.current.rotation, {
         x: 0,
-        y: 6.28, // Full 360 degree spin turn
+        y: 6.28,
         z: 0,
         duration: 1,
         ease: 'power2.inOut',
@@ -122,7 +120,7 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({ activeVariant }) => {
   }, [setCanvasLoaded]);
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative pointer-events-none md:pointer-events-auto">
       <Canvas
         camera={{ position: [0, 0, 7], fov: 45 }}
         dpr={[1, 2]}
@@ -136,7 +134,7 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({ activeVariant }) => {
       >
         <Suspense fallback={null}>
           <LightingEnvironment />
-          <FloatingParticles count={50} color={activeVariant.accentColor} />
+          <FloatingParticles count={40} color={activeVariant.accentColor} />
           <AnimatedBottleContainer activeVariant={activeVariant} />
           <OrbitControls
             enableZoom={false}
