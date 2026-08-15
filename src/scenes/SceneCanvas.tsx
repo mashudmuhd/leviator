@@ -31,7 +31,7 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
           trigger: '#app-scroll-container',
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1.2,
+          scrub: 1.5, // Buttery soft damping on scroll scrub
           onUpdate: (self) => {
             const index = Math.min(4, Math.floor(self.progress * 5));
             setActiveSectionIndex(index);
@@ -39,64 +39,64 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
         },
       });
 
-      // Section 0 -> Section 1 (Ingredients Zoom)
+      // Section 0 -> Section 1 (Ingredients Gentle Zoom Shift)
       tl.to(groupRef.current.position, {
-        x: 1.4,
-        y: 0.3,
-        z: 1.2,
-        duration: 1,
-        ease: 'power2.inOut',
-      }).to(groupRef.current.rotation, {
-        x: 0.25,
-        y: -0.8,
-        z: 0.1,
-        duration: 1,
-        ease: 'power2.inOut',
-      }, '<');
-
-      // Section 1 -> Section 2 (Notes Shift Left)
-      tl.to(groupRef.current.position, {
-        x: -1.5,
-        y: -0.2,
+        x: 1.1,
+        y: 0.2,
         z: 0.8,
         duration: 1,
-        ease: 'power2.inOut',
+        ease: 'power2.out',
       }).to(groupRef.current.rotation, {
-        x: -0.2,
-        y: 1.2,
-        z: -0.15,
+        x: 0.08,
+        y: -0.25,
+        z: 0.02,
         duration: 1,
-        ease: 'power2.inOut',
+        ease: 'power2.out',
       }, '<');
 
-      // Section 2 -> Section 3 (Craftsmanship Close-up)
+      // Section 1 -> Section 2 (Notes Subtle Left View)
       tl.to(groupRef.current.position, {
-        x: 0,
-        y: -1.2,
-        z: 2.2,
-        duration: 1,
-        ease: 'power2.inOut',
-      }).to(groupRef.current.rotation, {
-        x: 0.6,
-        y: 0.5,
-        z: 0.1,
-        duration: 1,
-        ease: 'power2.inOut',
-      }, '<');
-
-      // Section 3 -> Section 4 (Buy Section Finale)
-      tl.to(groupRef.current.position, {
-        x: 0,
+        x: -1.2,
         y: -0.1,
-        z: 0.5,
+        z: 0.6,
         duration: 1,
-        ease: 'power2.inOut',
+        ease: 'power2.out',
+      }).to(groupRef.current.rotation, {
+        x: -0.05,
+        y: 0.35,
+        z: -0.02,
+        duration: 1,
+        ease: 'power2.out',
+      }, '<');
+
+      // Section 2 -> Section 3 (Craftsmanship Subtle Cap Perspective)
+      tl.to(groupRef.current.position, {
+        x: 0,
+        y: -0.8,
+        z: 1.4,
+        duration: 1,
+        ease: 'power2.out',
+      }).to(groupRef.current.rotation, {
+        x: 0.2,
+        y: 0.15,
+        z: 0.02,
+        duration: 1,
+        ease: 'power2.out',
+      }, '<');
+
+      // Section 3 -> Section 4 (Buy Showcase Centered Studio Pose)
+      tl.to(groupRef.current.position, {
+        x: 0,
+        y: -0.05,
+        z: 0.4,
+        duration: 1,
+        ease: 'power2.out',
       }).to(groupRef.current.rotation, {
         x: 0,
-        y: 6.28,
+        y: 0.4,
         z: 0,
         duration: 1,
-        ease: 'power2.inOut',
+        ease: 'power2.out',
       }, '<');
     });
 
@@ -105,7 +105,8 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
 
   return (
     <group ref={groupRef}>
-      <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
+      {/* Silky-smooth subtle floating float effect */}
+      <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.08}>
         <PerfumeBottle variant={activeVariant} />
       </Float>
     </group>
@@ -134,13 +135,15 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({ activeVariant }) => {
       >
         <Suspense fallback={null}>
           <LightingEnvironment />
-          <FloatingParticles count={40} color={activeVariant.accentColor} />
+          <FloatingParticles count={35} color={activeVariant.accentColor} />
           <AnimatedBottleContainer activeVariant={activeVariant} />
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            maxPolarAngle={Math.PI / 1.6}
-            minPolarAngle={Math.PI / 3}
+            maxPolarAngle={Math.PI / 1.7}
+            minPolarAngle={Math.PI / 2.8}
+            rotateSpeed={0.5}
+            dampingFactor={0.05}
           />
         </Suspense>
       </Canvas>

@@ -139,23 +139,23 @@ export const PerfumeBottle: React.FC<PerfumeBottleProps> = ({ variant }) => {
     if (!bottleGroupRef.current) return;
 
     if (!isReducedMotion) {
-      // Idle slow continuous rotation on Y axis
-      bottleGroupRef.current.rotation.y += delta * 0.25;
+      // Very slow, realistic studio micro-drift (0.03 speed instead of 0.25 spin)
+      bottleGroupRef.current.rotation.y += delta * 0.03;
 
-      // Subtle mouse parallax tilt
+      // Ultra-soft, dampened mouse tilt parallax for realistic 3D depth
       targetRotation.current.x = THREE.MathUtils.lerp(
         targetRotation.current.x,
-        mousePosition.y,
-        0.08
+        mousePosition.y * 0.3,
+        0.03
       );
       targetRotation.current.y = THREE.MathUtils.lerp(
         targetRotation.current.y,
-        mousePosition.x,
-        0.08
+        mousePosition.x * 0.3,
+        0.03
       );
 
       bottleGroupRef.current.rotation.x = targetRotation.current.x;
-      bottleGroupRef.current.rotation.z = -targetRotation.current.y * 0.5;
+      bottleGroupRef.current.rotation.z = -targetRotation.current.y * 0.2;
     }
   });
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { PerfumeVariant } from '../types';
-import { useSceneStore } from '../stores/useSceneStore';
 
 interface PerfumeBottle3DProps {
   activeVariant: PerfumeVariant;
@@ -16,7 +15,6 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const bottleGroupRef = useRef<THREE.Group | null>(null);
-  const labelMeshRef = useRef<THREE.Mesh | null>(null);
   const glassMatRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const podiumLightRef = useRef<THREE.PointLight | null>(null);
 
@@ -108,7 +106,7 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
     camera.position.set(0, 0.05, 5.6);
     camera.lookAt(0, -0.05, 0);
 
-    // Lighting
+    // Studio Lighting
     scene.add(new THREE.AmbientLight(0x3a2a1a, 0.9));
 
     const key = new THREE.SpotLight(0xffcf8a, 4.4, 20, Math.PI / 5, 0.5, 1.2);
@@ -177,7 +175,6 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
     labelMesh.position.set(0, -0.18, 0.535);
     labelMesh.renderOrder = 2;
     bottleGroup.add(labelMesh);
-    labelMeshRef.current = labelMesh;
 
     // Gold collar trim
     const goldMat = new THREE.MeshStandardMaterial({
@@ -281,7 +278,7 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
     scene.add(ball);
 
     // Floating Dust Particles
-    const PCOUNT = 110;
+    const PCOUNT = 90;
     const positions = new Float32Array(PCOUNT * 3);
     for (let i = 0; i < PCOUNT; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 5.5;
@@ -294,7 +291,7 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
       color: new THREE.Color(activeVariant.accentColor || '#e6c07a'),
       size: 0.015,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.4,
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
@@ -333,7 +330,7 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
     const ro = new ResizeObserver(resize);
     ro.observe(mount);
 
-    // Pointer Interaction (Drag-to-rotate)
+    // Smooth Drag-to-Rotate Physics
     let dragging = false;
     let lastX = 0,
       lastY = 0;
@@ -356,13 +353,13 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
       const dy = p.clientY - lastY;
       lastX = p.clientX;
       lastY = p.clientY;
-      bottleGroupRef.current.rotation.y += dx * 0.01;
+      bottleGroupRef.current.rotation.y += dx * 0.006;
       bottleGroupRef.current.rotation.x = THREE.MathUtils.clamp(
-        bottleGroupRef.current.rotation.x + dy * 0.005,
-        -0.35,
-        0.35
+        bottleGroupRef.current.rotation.x + dy * 0.003,
+        -0.2,
+        0.2
       );
-      velocity = dx * 0.01;
+      velocity = dx * 0.006;
     };
 
     const pointerUp = () => {
@@ -380,7 +377,7 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
     window.addEventListener('pointermove', pointerMove as any);
     window.addEventListener('pointerup', pointerUp);
 
-    // Animation Loop
+    // Animation Loop with Ultra-smooth Damping
     let raf: number;
     const clock = new THREE.Clock();
     const animate = () => {
@@ -390,15 +387,14 @@ export const PerfumeBottle3D: React.FC<PerfumeBottle3DProps> = ({
 
       if (!dragging && bottleGroupRef.current) {
         idleTimer += dt;
-        velocity *= 0.92;
-        bottleGroupRef.current.rotation.y += velocity + (idleTimer > 1.2 ? 0.0022 : 0);
+        velocity *= 0.95; // High friction inertia decay
+        bottleGroupRef.current.rotation.y += velocity + (idleTimer > 1.5 ? 0.0006 : 0); // Ultra-slow studio micro-drift
       }
 
-      gem.rotation.y += 0.01;
-      gem.rotation.x += 0.005;
-      particles.rotation.y += 0.0008;
+      gem.rotation.y += 0.005;
+      particles.rotation.y += 0.0004;
       if (podiumLightRef.current) {
-        podiumLightRef.current.intensity = 1.3 + Math.sin(t * 1.5) * 0.15;
+        podiumLightRef.current.intensity = 1.3 + Math.sin(t * 1.5) * 0.1;
       }
 
       renderer.render(scene, camera);
