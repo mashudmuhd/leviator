@@ -1,7 +1,8 @@
 import React from 'react';
-import { ShoppingBag, MessageCircle, Sparkles } from 'lucide-react';
+import { ShoppingBag, Sparkles } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { useBottleVariant } from '../../hooks/useBottleVariant';
+import { getAssetPath } from '../../utils/assets';
 
 export const MobileBottomBar: React.FC = () => {
   const { openCart, totalItems, addItem } = useCart();
@@ -25,9 +26,12 @@ export const MobileBottomBar: React.FC = () => {
               title={`Switch to ${nextVariant.name}`}
             >
               <img
-                src={nextVariant.imageFallback}
+                src={getAssetPath(nextVariant.imageFallback)}
                 alt={nextVariant.name}
-                className="w-6 h-6 rounded-full object-cover border border-white/40"
+                className="w-6 h-6 rounded-full object-cover border border-white/40 shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
               />
               <span className="font-semibold text-brand-gold">Switch</span>
             </button>
@@ -38,7 +42,7 @@ export const MobileBottomBar: React.FC = () => {
               {activeVariant.name}
             </span>
             <span className="text-[10px] text-brand-gold font-mono font-semibold">
-              ${activeVariant.price}
+              AED {activeVariant.price}
             </span>
           </div>
         </div>

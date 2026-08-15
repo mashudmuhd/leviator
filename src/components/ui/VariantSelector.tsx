@@ -1,5 +1,6 @@
 import React from 'react';
 import { useBottleVariant } from '../../hooks/useBottleVariant';
+import { getAssetPath } from '../../utils/assets';
 
 export const VariantSelector: React.FC = () => {
   const { activeVariant, variants, setVariantId } = useBottleVariant();
@@ -25,13 +26,16 @@ export const VariantSelector: React.FC = () => {
           >
             {v.imageFallback ? (
               <img
-                src={v.imageFallback}
+                src={getAssetPath(v.imageFallback)}
                 alt={v.name}
-                className="w-4 h-4 rounded-full object-cover border border-white/40"
+                className="w-4 h-4 rounded-full object-cover border border-white/40 shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
               />
             ) : (
               <span
-                className="w-3 h-3 rounded-full border border-white/40"
+                className="w-3 h-3 rounded-full border border-white/40 shrink-0"
                 style={{ backgroundColor: v.liquidColor }}
               />
             )}

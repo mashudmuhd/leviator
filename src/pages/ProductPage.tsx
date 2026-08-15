@@ -6,6 +6,7 @@ import { NoteBadge } from '../components/ui/NoteBadge';
 import { PerfumeBottle3D } from '../scenes/PerfumeBottle3D';
 import { ShoppingBag, Check, ChevronRight, Rotate3D } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getAssetPath } from '../utils/assets';
 
 export const ProductPage: React.FC = () => {
   const { activeVariant, variants, setVariantId } = useBottleVariant();
@@ -33,7 +34,7 @@ export const ProductPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left 3D Interactive Bottle Canvas (PerfumeBottle3D) */}
+        {/* Left 3D Interactive Bottle Canvas */}
         <div className="lg:col-span-7 h-[520px] sm:h-[620px] glass-panel rounded-3xl relative overflow-hidden border border-white/10 shadow-2xl">
           <PerfumeBottle3D activeVariant={activeVariant} />
           <div className="absolute bottom-6 left-6 glass-pill px-4 py-2 rounded-full text-xs text-neutral-300 pointer-events-none flex items-center gap-2">
@@ -57,7 +58,7 @@ export const ProductPage: React.FC = () => {
           </div>
 
           <div className="font-serif text-4xl font-bold text-gradient-gold">
-            ${currentPrice}
+            AED {currentPrice}
           </div>
 
           <p className="text-xs text-neutral-300 leading-relaxed">
@@ -84,9 +85,12 @@ export const ProductPage: React.FC = () => {
                   }`}
                 >
                   <img
-                    src={v.imageFallback}
+                    src={getAssetPath(v.imageFallback)}
                     alt={v.name}
-                    className="w-5 h-5 rounded-full object-cover border border-white/30"
+                    className="w-5 h-5 rounded-full object-cover border border-white/30 shrink-0"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
                   />
                   <div className="overflow-hidden">
                     <span className="truncate block font-semibold">{v.name}</span>
@@ -145,7 +149,7 @@ export const ProductPage: React.FC = () => {
             onClick={handleAddToCart}
             icon={isAdded ? <Check className="w-5 h-5 text-black" /> : <ShoppingBag className="w-5 h-5 text-black" />}
           >
-            {isAdded ? 'Added to Bag' : `Acquire ${activeVariant.name} — $${currentPrice}`}
+            {isAdded ? 'Added to Bag' : `Acquire ${activeVariant.name} — AED ${currentPrice}`}
           </Button>
         </div>
       </div>

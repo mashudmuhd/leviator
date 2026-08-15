@@ -4,6 +4,7 @@ import { Button } from '../components/ui/Button';
 import { AnimatedSection } from '../components/animations/AnimatedSection';
 import { PerfumeBottle3D } from '../scenes/PerfumeBottle3D';
 import { Sparkles, ChevronDown, ArrowRight, Rotate3D } from 'lucide-react';
+import { getAssetPath } from '../utils/assets';
 
 export const HeroSection: React.FC<SectionProps> = ({
   id,
@@ -25,6 +26,18 @@ export const HeroSection: React.FC<SectionProps> = ({
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full blur-[100px] sm:blur-[160px] opacity-25 pointer-events-none transition-colors duration-1000"
         style={{ backgroundColor: activeVariant.liquidColor }}
       />
+
+      {/* WebGL Fallback Hero Image if WebGL is unsupported or low-tier device */}
+      {isFallbackMode && (
+        <div className="absolute inset-0 flex items-center justify-center z-0 opacity-40">
+          <img
+            src={getAssetPath(activeVariant.imageFallback)}
+            alt={activeVariant.name}
+            className="w-full h-full object-cover filter brightness-75 contrast-125"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-[#0a0a0c]" />
+        </div>
+      )}
 
       {/* Main Content Grid */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
@@ -74,7 +87,7 @@ export const HeroSection: React.FC<SectionProps> = ({
               }}
               icon={<ArrowRight className="w-4 h-4" />}
             >
-              Acquire Flacon — ${activeVariant.price}
+              Acquire Flacon — AED {activeVariant.price}
             </Button>
 
             <Button

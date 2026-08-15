@@ -9,6 +9,7 @@ import { NotesSection } from './NotesSection';
 import { CraftSection } from './CraftSection';
 import { BuySection } from './BuySection';
 import { SectionProps } from '../types';
+import { getAssetPath } from '../utils/assets';
 
 export const HomePage: React.FC = () => {
   const { activeVariant, setVariantId } = useBottleVariant();
@@ -41,10 +42,10 @@ export const HomePage: React.FC = () => {
           <SceneCanvas activeVariant={activeVariant} />
         </div>
       ) : (
-        /* Fallback Static Ambient Overlay with Enhanced Product Image */
+        /* Fallback Static Ambient Overlay with getAssetPath */
         <div className="fixed inset-0 z-0 pointer-events-none opacity-35 transition-all duration-1000">
           <img
-            src={activeVariant.imageFallback}
+            src={getAssetPath(activeVariant.imageFallback)}
             alt={activeVariant.name}
             className="w-full h-full object-cover filter brightness-50 contrast-125 transition-all duration-1000"
           />

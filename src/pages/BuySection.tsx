@@ -6,13 +6,14 @@ import { AnimatedSection } from '../components/animations/AnimatedSection';
 import { useCart } from '../hooks/useCart';
 import { ShoppingBag, Check, ShieldCheck, Truck, Gift, Lock, Sparkles, MessageCircle } from 'lucide-react';
 import { PERFUME_VARIANTS } from '../data/perfumeVariants';
+import { getAssetPath } from '../utils/assets';
 
 export const BuySection: React.FC<SectionProps> = ({
   id,
   activeVariant,
   onVariantChange,
 }) => {
-  const { addItem, openCart } = useCart();
+  const { addItem } = useCart();
   const [selectedVolume, setSelectedVolume] = useState<'100ml' | '50ml'>('100ml');
   const [isAdded, setIsAdded] = useState(false);
 
@@ -27,7 +28,7 @@ export const BuySection: React.FC<SectionProps> = ({
   };
 
   const handleDirectWhatsAppOrder = () => {
-    const text = `✨ *LEVIATOR HAUTE PARFUMERIE — QUICK ORDER* ✨\n\n🛍️ *Item:* ${activeVariant.name}\n📏 *Volume:* ${volumeLabel}\n💰 *Price:* $${currentPrice}\n\nPlease confirm availability and delivery details. Thank you!`;
+    const text = `✨ *LEVIATOR HAUTE PARFUMERIE — QUICK ORDER* ✨\n\n🛍️ *Item:* ${activeVariant.name}\n📏 *Volume:* ${volumeLabel}\n💰 *Price:* AED ${currentPrice}\n\nPlease confirm availability and delivery details. Thank you!`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -69,7 +70,7 @@ export const BuySection: React.FC<SectionProps> = ({
 
               <div className="sm:text-right">
                 <span className="font-serif text-3xl sm:text-5xl font-bold text-gradient-gold">
-                  ${currentPrice}
+                  AED {currentPrice}
                 </span>
                 <p className="text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-widest">
                   Taxes Included
@@ -77,7 +78,7 @@ export const BuySection: React.FC<SectionProps> = ({
               </div>
             </div>
 
-            {/* Available Products Grid with Image Thumbnails */}
+            {/* Available Products Grid with Image Thumbnails using getAssetPath */}
             <div>
               <label className="text-[11px] sm:text-xs uppercase tracking-widest text-neutral-300 font-semibold mb-2.5 block">
                 Select Olfactory Flavour
@@ -98,9 +99,12 @@ export const BuySection: React.FC<SectionProps> = ({
                       {/* Product Image Thumbnail */}
                       <div className="w-12 h-14 sm:w-14 sm:h-16 rounded-xl border border-white/20 overflow-hidden relative shrink-0">
                         <img
-                          src={variant.imageFallback}
+                          src={getAssetPath(variant.imageFallback)}
                           alt={variant.name}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80';
+                          }}
                         />
                         <div
                           className="absolute inset-0 opacity-20 pointer-events-none"
@@ -116,7 +120,7 @@ export const BuySection: React.FC<SectionProps> = ({
                           {variant.scentFamily}
                         </p>
                         <span className="text-[10px] text-brand-gold font-mono block mt-0.5 font-bold">
-                          ${variant.price}
+                          AED {variant.price}
                         </span>
                       </div>
 
@@ -173,7 +177,7 @@ export const BuySection: React.FC<SectionProps> = ({
                   )
                 }
               >
-                {isAdded ? 'Added to Fragrance Bag' : `Add ${activeVariant.name} — $${currentPrice}`}
+                {isAdded ? 'Added to Fragrance Bag' : `Add ${activeVariant.name} — AED ${currentPrice}`}
               </Button>
 
               <button

@@ -7,7 +7,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     tagline: 'Dark Resin & Smoked Amber Vanilla',
     description: 'The inaugural masterpiece. A matte black crystal flacon housing rare Baltic amber, aged dark resin, and nocturnal smoked Madagascar vanilla.',
     price: 340,
-    currency: 'USD',
+    currency: 'AED',
     volume: '100ml / 3.4 fl. oz.',
     glassColor: '#0a0a0d',
     liquidColor: '#e28743',
@@ -41,7 +41,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     },
     inStock: true,
     isComingSoon: false,
-    imageFallback: '/images/leviatur-signature.jpg'
+    imageFallback: 'images/leviatur-signature.jpg'
   },
   {
     id: 'rose-lavie',
@@ -49,7 +49,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     tagline: 'Nocturnal Bloom & Crimson Velvet',
     description: 'Enchanting luxury. Hand-picked Damask rose harvested at dusk, resting on gold pedestals with white truffle mist and soft cashmere wood.',
     price: 380,
-    currency: 'USD',
+    currency: 'AED',
     volume: '100ml / 3.4 fl. oz.',
     glassColor: '#1c0c16',
     liquidColor: '#e056fd',
@@ -83,7 +83,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     },
     inStock: true,
     isComingSoon: false,
-    imageFallback: '/images/rose-lavie.jpg'
+    imageFallback: 'images/rose-lavie.jpg'
   },
   {
     id: 'velvet-oud',
@@ -91,7 +91,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     tagline: 'Smoky Leather & Royal Agarwood',
     description: 'Commanding and regal. Wild vintage agarwood infused with Kashmir saffron threads, Tuscan leather, and dark cocoa bean resin.',
     price: 420,
-    currency: 'USD',
+    currency: 'AED',
     volume: '100ml / 3.4 fl. oz.',
     glassColor: '#0f0c20',
     liquidColor: '#6c5ce7',
@@ -130,7 +130,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     tagline: 'Rain-soaked Cedar & Wild Moss',
     description: 'Crisp green luxury. Smoky Haitian vetiver root blended with rain-drenched cedar leaves and luminous crushed bergamot.',
     price: 320,
-    currency: 'USD',
+    currency: 'AED',
     volume: '100ml / 3.4 fl. oz.',
     glassColor: '#0a1c14',
     liquidColor: '#00b894',

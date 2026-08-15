@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, Plus, Minus, ShieldCheck, Sparkles, MessageCircle, Phone } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { Button } from './Button';
+import { getAssetPath } from '../../utils/assets';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -12,7 +13,6 @@ export const CartDrawer: React.FC = () => {
     removeItem,
     updateQuantity,
     totalPrice,
-    clearCart,
   } = useCart();
 
   const [customerName, setCustomerName] = useState('');
@@ -21,7 +21,6 @@ export const CartDrawer: React.FC = () => {
   const handleWhatsAppCheckout = () => {
     if (items.length === 0) return;
 
-    // Build elegant WhatsApp message text
     let orderText = `✨ *LEVIATOR HAUTE PARFUMERIE — ORDER REQUEST* ✨\n`;
     orderText += `----------------------------------\n`;
     
@@ -37,12 +36,12 @@ export const CartDrawer: React.FC = () => {
       orderText += `${index + 1}. *${item.variant.name}*\n`;
       orderText += `   • Size: ${item.selectedVolume}\n`;
       orderText += `   • Quantity: ${item.quantity}\n`;
-      orderText += `   • Unit Price: $${item.unitPrice}\n`;
-      orderText += `   • Subtotal: $${item.unitPrice * item.quantity}\n\n`;
+      orderText += `   • Unit Price: AED ${item.unitPrice}\n`;
+      orderText += `   • Subtotal: AED ${item.unitPrice * item.quantity}\n\n`;
     });
 
     orderText += `----------------------------------\n`;
-    orderText += `💰 *TOTAL AMOUNT:* $${totalPrice}\n`;
+    orderText += `💰 *TOTAL AMOUNT:* AED ${totalPrice}\n`;
     orderText += `🚚 *SHIPPING:* Complimentary Worldwide Express\n`;
     orderText += `🎁 *GIFTS:* 2 Free Discovery Samples Included\n`;
     orderText += `----------------------------------\n`;
@@ -51,7 +50,6 @@ export const CartDrawer: React.FC = () => {
     const encodedText = encodeURIComponent(orderText);
     const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
 
-    // If phone number specified, open wa.me/phone, otherwise open wa.me/?text
     const whatsappUrl = cleanPhone
       ? `https://wa.me/${cleanPhone}?text=${encodedText}`
       : `https://api.whatsapp.com/send?text=${encodedText}`;
@@ -121,12 +119,16 @@ export const CartDrawer: React.FC = () => {
                           exit={{ opacity: 0, x: -20 }}
                           className="flex gap-4 p-4 rounded-xl glass-pill border border-white/10 relative group bg-black/40 overflow-hidden"
                         >
-                          {/* Product Image Thumbnail */}
+                          {/* Product Image Thumbnail with getAssetPath */}
                           <div className="w-20 h-24 rounded-lg border border-white/20 overflow-hidden relative shrink-0">
                             <img
-                              src={item.variant.imageFallback}
+                              src={getAssetPath(item.variant.imageFallback)}
                               alt={item.variant.name}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              onError={(e) => {
+                                // Fallback image handler
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80';
+                              }}
                             />
                             <div
                               className="absolute inset-0 opacity-20 pointer-events-none"
@@ -175,7 +177,7 @@ export const CartDrawer: React.FC = () => {
                               </div>
 
                               <span className="font-serif text-sm font-bold text-gradient-gold">
-                                ${item.unitPrice * item.quantity}
+                                AED {item.unitPrice * item.quantity}
                               </span>
                             </div>
                           </div>
@@ -183,7 +185,7 @@ export const CartDrawer: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* Optional Customer Contact Form for WhatsApp */}
+                    {/* Customer Contact Form */}
                     <div className="glass-panel p-4 rounded-xl space-y-3 border border-white/10">
                       <div className="flex items-center gap-2 text-xs font-semibold text-brand-gold uppercase tracking-wider">
                         <MessageCircle className="w-4 h-4 text-emerald-400" />
@@ -201,7 +203,7 @@ export const CartDrawer: React.FC = () => {
                           <Phone className="w-3.5 h-3.5 text-neutral-500 absolute left-3 top-2.5" />
                           <input
                             type="text"
-                            placeholder="WhatsApp Number (e.g. +919876543210)"
+                            placeholder="WhatsApp Number (e.g. +971501234567)"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold/60"
@@ -227,7 +229,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
                     <div className="flex justify-between text-base font-serif font-bold text-white pt-2 border-t border-white/10">
                       <span>Total Price</span>
-                      <span className="text-gradient-gold">${totalPrice}</span>
+                      <span className="text-gradient-gold">AED {totalPrice}</span>
                     </div>
                   </div>
 
@@ -238,12 +240,12 @@ export const CartDrawer: React.FC = () => {
                     icon={<MessageCircle className="w-4 h-4 fill-black" />}
                     onClick={handleWhatsAppCheckout}
                   >
-                    Checkout via WhatsApp (${totalPrice})
+                    Checkout via WhatsApp (AED {totalPrice})
                   </Button>
 
                   <div className="flex items-center justify-center gap-2 text-[10px] text-neutral-400 pt-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-brand-gold" />
-                    <span>Instant WhatsApp Order Confirmation & Track</span>
+                    <span>Instant WhatsApp Order Confirmation</span>
                   </div>
                 </div>
               )}
