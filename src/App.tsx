@@ -7,7 +7,7 @@ import { CraftPage } from './pages/CraftPage';
 
 export const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <PageLayout>
         <Routes>
           <Route path="/" element={<HomePage />} />
