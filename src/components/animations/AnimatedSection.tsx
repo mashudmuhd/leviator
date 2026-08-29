@@ -5,24 +5,24 @@ export type AnimationPreset = 'fadeUp' | 'fadeIn' | 'slideLeft' | 'slideRight' |
 
 const presets: Record<AnimationPreset, Variants> = {
   fadeUp: {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   },
   fadeIn: {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+    visible: { opacity: 1, transition: { duration: 0.35, ease: 'easeOut' } },
   },
   slideLeft: {
-    hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    hidden: { opacity: 0, x: 30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   },
   slideRight: {
-    hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   },
   scaleUp: {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+    hidden: { opacity: 0, scale: 0.96 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   },
 };
 
@@ -50,10 +50,11 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
       id={id}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, margin: '-100px' }}
+      viewport={{ once: true, margin: '80px 0px -40px 0px', amount: 0.05 }}
       transition={{ delay }}
       variants={selectedVariants}
       className={className}
+      style={{ willChange: 'opacity, transform' }}
     >
       {children}
     </motion.div>

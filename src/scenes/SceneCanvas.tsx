@@ -23,81 +23,99 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
   const isReducedMotion = useSceneStore((state) => state.isReducedMotion);
 
   useEffect(() => {
-    if (isReducedMotion || !groupRef.current) return;
+    if (!groupRef.current) return;
 
+    // Initial desktop vs mobile responsive positioning
+    const isDesktop = window.innerWidth >= 768;
+    if (isDesktop) {
+      groupRef.current.position.set(1.5, -0.05, 0.2);
+      groupRef.current.scale.set(1.1, 1.1, 1.1);
+    } else {
+      groupRef.current.position.set(0, -0.15, 0);
+      groupRef.current.scale.set(0.9, 0.9, 0.9);
+    }
+
+    if (isReducedMotion) return;
+
+    let lastIndex = -1;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#app-scroll-container',
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1.5, // Buttery soft damping on scroll scrub
+          scrub: 0.4, // Instant responsive scrub without lag
           onUpdate: (self) => {
             const index = Math.min(4, Math.floor(self.progress * 5));
-            setActiveSectionIndex(index);
+            if (index !== lastIndex) {
+              lastIndex = index;
+              setActiveSectionIndex(index);
+            }
           },
         },
       });
 
-      // Section 0 -> Section 1 (Ingredients Gentle Zoom Shift)
-      tl.to(groupRef.current.position, {
-        x: 1.1,
-        y: 0.2,
-        z: 0.8,
-        duration: 1,
-        ease: 'power2.out',
-      }).to(groupRef.current.rotation, {
-        x: 0.08,
-        y: -0.25,
-        z: 0.02,
-        duration: 1,
-        ease: 'power2.out',
-      }, '<');
+      if (isDesktop) {
+        // Section 0 (Hero) -> Section 1 (Ingredients: moves to right/zoom)
+        tl.to(groupRef.current.position, {
+          x: 1.4,
+          y: 0.1,
+          z: 0.6,
+          duration: 1,
+          ease: 'power2.out',
+        }).to(groupRef.current.rotation, {
+          x: 0.05,
+          y: -0.3,
+          z: 0.02,
+          duration: 1,
+          ease: 'power2.out',
+        }, '<');
 
-      // Section 1 -> Section 2 (Notes Subtle Left View)
-      tl.to(groupRef.current.position, {
-        x: -1.2,
-        y: -0.1,
-        z: 0.6,
-        duration: 1,
-        ease: 'power2.out',
-      }).to(groupRef.current.rotation, {
-        x: -0.05,
-        y: 0.35,
-        z: -0.02,
-        duration: 1,
-        ease: 'power2.out',
-      }, '<');
+        // Section 1 -> Section 2 (Notes: shifts left)
+        tl.to(groupRef.current.position, {
+          x: -1.4,
+          y: -0.05,
+          z: 0.5,
+          duration: 1,
+          ease: 'power2.out',
+        }).to(groupRef.current.rotation, {
+          x: -0.04,
+          y: 0.35,
+          z: -0.02,
+          duration: 1,
+          ease: 'power2.out',
+        }, '<');
 
-      // Section 2 -> Section 3 (Craftsmanship Subtle Cap Perspective)
-      tl.to(groupRef.current.position, {
-        x: 0,
-        y: -0.8,
-        z: 1.4,
-        duration: 1,
-        ease: 'power2.out',
-      }).to(groupRef.current.rotation, {
-        x: 0.2,
-        y: 0.15,
-        z: 0.02,
-        duration: 1,
-        ease: 'power2.out',
-      }, '<');
+        // Section 2 -> Section 3 (Craftsmanship: centered cap inspection)
+        tl.to(groupRef.current.position, {
+          x: 0,
+          y: -0.6,
+          z: 1.3,
+          duration: 1,
+          ease: 'power2.out',
+        }).to(groupRef.current.rotation, {
+          x: 0.18,
+          y: 0.15,
+          z: 0.02,
+          duration: 1,
+          ease: 'power2.out',
+        }, '<');
 
-      // Section 3 -> Section 4 (Buy Showcase Centered Studio Pose)
-      tl.to(groupRef.current.position, {
-        x: 0,
-        y: -0.05,
-        z: 0.4,
-        duration: 1,
-        ease: 'power2.out',
-      }).to(groupRef.current.rotation, {
-        x: 0,
-        y: 0.4,
-        z: 0,
-        duration: 1,
-        ease: 'power2.out',
-      }, '<');
+        // Section 3 -> Section 4 (Buy / Studio Pose)
+        tl.to(groupRef.current.position, {
+          x: -1.3,
+          y: 0,
+          z: 0.3,
+          duration: 1,
+          ease: 'power2.out',
+        }).to(groupRef.current.rotation, {
+          x: 0,
+          y: 0.45,
+          z: 0,
+          duration: 1,
+          ease: 'power2.out',
+        }, '<');
+      }
     });
 
     return () => ctx.revert();
@@ -105,8 +123,7 @@ const AnimatedBottleContainer: React.FC<{ activeVariant: PerfumeVariant }> = ({ 
 
   return (
     <group ref={groupRef}>
-      {/* Silky-smooth subtle floating float effect */}
-      <Float speed={0.4} rotationIntensity={0.05} floatIntensity={0.08}>
+      <Float speed={0.4} rotationIntensity={0.03} floatIntensity={0.05}>
         <PerfumeBottle variant={activeVariant} />
       </Float>
     </group>
@@ -123,26 +140,26 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({ activeVariant }) => {
   return (
     <div className="w-full h-full relative pointer-events-none md:pointer-events-auto">
       <Canvas
-        camera={{ position: [0, 0, 7], fov: 45 }}
+        camera={{ position: [0, 0, 6.2], fov: 42 }}
         dpr={[1, 2]}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: 'high-performance',
-          toneMappingExposure: 1.1,
+          toneMappingExposure: 1.15,
         }}
         className="canvas-container"
       >
         <Suspense fallback={null}>
           <LightingEnvironment />
-          <FloatingParticles count={35} color={activeVariant.accentColor} />
+          <FloatingParticles count={28} color={activeVariant.accentColor} />
           <AnimatedBottleContainer activeVariant={activeVariant} />
           <OrbitControls
             enableZoom={false}
             enablePan={false}
             maxPolarAngle={Math.PI / 1.7}
             minPolarAngle={Math.PI / 2.8}
-            rotateSpeed={0.5}
+            rotateSpeed={0.4}
             dampingFactor={0.05}
           />
         </Suspense>

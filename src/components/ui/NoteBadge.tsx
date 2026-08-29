@@ -3,35 +3,53 @@ import { OlfactoryNote } from '../../types';
 
 interface NoteBadgeProps {
   note: OlfactoryNote;
+  isSelected?: boolean;
+  onSelect?: (note: OlfactoryNote) => void;
+  onHover?: (note: OlfactoryNote | null) => void;
 }
 
-export const NoteBadge: React.FC<NoteBadgeProps> = ({ note }) => {
-  const categoryColors = {
-    top: 'border-amber-500/30 text-amber-300 bg-amber-500/10',
-    heart: 'border-purple-500/30 text-purple-300 bg-purple-500/10',
-    base: 'border-emerald-500/30 text-emerald-300 bg-emerald-500/10',
+export const NoteBadge: React.FC<NoteBadgeProps> = ({
+  note,
+  isSelected = false,
+  onSelect,
+  onHover,
+}) => {
+  const categoryStyles = {
+    top: {
+      idle: 'border-amber-500/30 text-amber-200 bg-amber-500/10 hover:border-amber-400 hover:bg-amber-500/20',
+      active: 'border-amber-400 text-white bg-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.35)] ring-1 ring-amber-400/50',
+      dot: 'bg-amber-400',
+    },
+    heart: {
+      idle: 'border-purple-500/30 text-purple-200 bg-purple-500/10 hover:border-purple-400 hover:bg-purple-500/20',
+      active: 'border-purple-400 text-white bg-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.35)] ring-1 ring-purple-400/50',
+      dot: 'bg-purple-400',
+    },
+    base: {
+      idle: 'border-emerald-500/30 text-emerald-200 bg-emerald-500/10 hover:border-emerald-400 hover:bg-emerald-500/20',
+      active: 'border-emerald-400 text-white bg-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.35)] ring-1 ring-emerald-400/50',
+      dot: 'bg-emerald-400',
+    },
   };
 
-  return (
-    <div className="group relative inline-block">
-      <div
-        className={`px-3.5 py-1.5 rounded-full text-xs font-medium border backdrop-blur-md transition-all duration-300 cursor-help ${
-          categoryColors[note.category]
-        } hover:scale-105 hover:border-brand-gold/60`}
-      >
-        <span className="w-1.5 h-1.5 rounded-full inline-block mr-2 bg-current" />
-        {note.name}
-      </div>
+  const style = categoryStyles[note.category] || categoryStyles.top;
 
-      {/* Tooltip */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 glass-panel rounded-xl text-xs text-neutral-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-40 shadow-xl border border-white/10">
-        <p className="font-semibold text-white mb-1">{note.name}</p>
-        <p className="text-[11px] leading-relaxed mb-1.5">{note.description}</p>
-        <div className="flex items-center justify-between text-[10px] text-neutral-400 border-t border-white/10 pt-1 mt-1">
-          <span>Origin: {note.origin}</span>
-          <span className="capitalize text-brand-gold">{note.category} Note</span>
-        </div>
-      </div>
-    </div>
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect?.(note)}
+      onMouseEnter={() => onHover?.(note)}
+      className={`px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs font-medium border backdrop-blur-md transition-all duration-200 flex items-center gap-2 cursor-pointer select-none active:scale-95 ${
+        isSelected ? style.active : style.idle
+      }`}
+    >
+      <span
+        className={`w-2 h-2 rounded-full shrink-0 transition-transform ${style.dot} ${
+          isSelected ? 'scale-125' : ''
+        }`}
+        style={note.color ? { backgroundColor: note.color } : undefined}
+      />
+      <span className="truncate">{note.name}</span>
+    </button>
   );
 };

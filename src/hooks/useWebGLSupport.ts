@@ -21,16 +21,10 @@ export function useWebGLSupport(): WebGLSupportInfo {
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const prefersReducedMotion = motionQuery.matches;
 
-    // Estimate low-end device via hardwareConcurrency or mobile userAgent
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-    const lowCores = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
-    const isLowEndDevice = isMobile || lowCores;
-
+    // Real low-end detection only if WebGL is completely failing
     setSupportInfo({
       isSupported,
-      isLowEndDevice,
+      isLowEndDevice: false,
       prefersReducedMotion,
     });
 

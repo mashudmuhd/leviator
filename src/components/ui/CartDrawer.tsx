@@ -48,11 +48,7 @@ export const CartDrawer: React.FC = () => {
     orderText += `Please confirm availability and dispatch details. Thank you!`;
 
     const encodedText = encodeURIComponent(orderText);
-    const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
-
-    const whatsappUrl = cleanPhone
-      ? `https://wa.me/${cleanPhone}?text=${encodedText}`
-      : `https://api.whatsapp.com/send?text=${encodedText}`;
+    const whatsappUrl = `https://wa.me/971544478456?text=${encodedText}`;
 
     window.open(whatsappUrl, '_blank');
   };

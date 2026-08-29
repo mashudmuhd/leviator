@@ -1,6 +1,7 @@
 import React from 'react';
-import { Sparkles, ArrowRight, Instagram, Twitter, Shield, Heart } from 'lucide-react';
+import { ArrowRight, Instagram, Twitter, Shield, Heart } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { LavishAuraLogo } from '../ui/LavishAuraLogo';
 
 export const Footer: React.FC = () => {
   return (
@@ -13,14 +14,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-white/10">
           {/* Brand Identity */}
           <div className="md:col-span-5 space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full border border-brand-gold/40 flex items-center justify-center glass-panel">
-                <Sparkles className="w-4 h-4 text-brand-gold" />
-              </div>
-              <span className="font-serif text-xl tracking-[0.25em] font-semibold text-gradient-gold uppercase">
-                LEVIATOR
-              </span>
-            </div>
+            <LavishAuraLogo variant="horizontal" />
             <p className="text-sm text-neutral-400 max-w-sm leading-relaxed">
               Crafting immortal olfactory identities through rare hand-harvested resins, hand-blown heavy crystal glass, and haute parfumerie alchemy.
             </p>
@@ -66,10 +60,15 @@ export const Footer: React.FC = () => {
 
           <div className="md:col-span-3 space-y-4">
             <h4 className="font-serif text-sm tracking-widest text-white uppercase">Atelier Concierge</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Place Vendôme 14, 75001 Paris, France
-            </p>
             <p className="text-xs text-brand-gold font-mono">concierge@leviator.parfum</p>
+            <a
+              href="https://wa.me/971544478456"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-emerald-400 hover:text-emerald-300 font-mono flex items-center gap-1.5 transition-colors"
+            >
+              <span>WhatsApp: +971 54 447 8456</span>
+            </a>
             <div className="flex gap-4 text-neutral-400 pt-2">
               <a href="#" className="hover:text-brand-gold transition-colors p-2 glass-pill rounded-full">
                 <Instagram className="w-4 h-4" />

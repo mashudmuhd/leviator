@@ -29,7 +29,7 @@ export const BuySection: React.FC<SectionProps> = ({
 
   const handleDirectWhatsAppOrder = () => {
     const text = `✨ *LEVIATOR HAUTE PARFUMERIE — QUICK ORDER* ✨\n\n🛍️ *Item:* ${activeVariant.name}\n📏 *Volume:* ${volumeLabel}\n💰 *Price:* AED ${currentPrice}\n\nPlease confirm availability and delivery details. Thank you!`;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/971544478456?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const activeProducts = PERFUME_VARIANTS.filter((v) => !v.isComingSoon);

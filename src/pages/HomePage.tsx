@@ -37,21 +37,11 @@ export const HomePage: React.FC = () => {
       />
 
       {/* Pinned 3D Scene Background Canvas */}
-      {isSupported && !isLowEndDevice ? (
+      {isSupported ? (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <SceneCanvas activeVariant={activeVariant} />
         </div>
-      ) : (
-        /* Fallback Static Ambient Overlay with getAssetPath */
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-35 transition-all duration-1000">
-          <img
-            src={getAssetPath(activeVariant.imageFallback)}
-            alt={activeVariant.name}
-            className="w-full h-full object-cover filter brightness-50 contrast-125 transition-all duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-transparent to-[#0a0a0c]" />
-        </div>
-      )}
+      ) : null}
 
       {/* Storytelling Sections Container */}
       <div className="relative z-10 space-y-0">

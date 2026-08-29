@@ -4,6 +4,7 @@ import { useCart } from '../../hooks/useCart';
 import { VariantSelector } from './VariantSelector';
 import { Button } from './Button';
 import { useBottleVariant } from '../../hooks/useBottleVariant';
+import { LavishAuraLogo } from './LavishAuraLogo';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Navbar: React.FC = () => {
@@ -24,18 +25,8 @@ export const Navbar: React.FC = () => {
       <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3 sm:py-4 transition-all duration-300 backdrop-blur-md bg-black/40 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Brand Logo */}
-          <a href="#hero" className="flex items-center gap-2 group cursor-pointer">
-            <div className="w-8 h-8 rounded-full border border-brand-gold/40 flex items-center justify-center bg-black/60 backdrop-blur-md group-hover:border-brand-gold transition-colors">
-              <Sparkles className="w-4 h-4 text-brand-gold group-hover:rotate-12 transition-transform" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-base sm:text-lg tracking-[0.2em] font-semibold text-gradient-gold uppercase">
-                LEVIATOR
-              </span>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-neutral-400 uppercase -mt-1">
-                Haute Parfumerie
-              </span>
-            </div>
+          <a href="#hero" className="cursor-pointer group block" aria-label="LEVIATOR Home">
+            <LavishAuraLogo variant="emblem" />
           </a>
 
           {/* Desktop Nav Links */}

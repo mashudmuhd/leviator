@@ -2,6 +2,93 @@ import { PerfumeVariant } from '../types';
 
 export const PERFUME_VARIANTS: PerfumeVariant[] = [
   {
+    id: 'lor-blanc',
+    name: 'L’Or Blanc',
+    tagline: 'Liquid Gold & Luminous White Floral Bloom',
+    description: 'An opulent floral nectar. Sparkling Amalfi lemon and crisp raspberry cascade into an intoxicating heart of jasmine, gardenia, and African orange flower, enveloped in molten white honey and golden amber.',
+    price: 360,
+    currency: 'AED',
+    volume: '100ml / 3.4 fl. oz.',
+    glassColor: '#1c140a',
+    liquidColor: '#f39c12',
+    accentColor: '#f1c40f',
+    capColor: '#3d3014',
+    bgGradient: 'radial-gradient(circle at 50% 40%, rgba(243, 156, 18, 0.28) 0%, rgba(18, 14, 8, 0.95) 75%)',
+    roughness: 0.1,
+    transmission: 0.88,
+    ior: 1.53,
+    scentFamily: 'Solar Floral Honey Amber',
+    notes: {
+      top: [
+        { id: 'lor-top-1', name: 'Wild Raspberry', category: 'top', description: 'Sun-drenched, tart-sweet red berry sparkle.', origin: 'Grasse, France', color: '#e84393' },
+        { id: 'lor-top-2', name: 'Mediterranean Neroli', category: 'top', description: 'Fresh, honeyed green floral citrus nuance.', origin: 'Tunisia', color: '#2ecc71' },
+        { id: 'lor-top-3', name: 'Amalfi Lemon', category: 'top', description: 'Zesty, crystalline Italian sunshine opening.', origin: 'Amalfi Coast, Italy', color: '#f1c40f' }
+      ],
+      heart: [
+        { id: 'lor-heart-1', name: 'Jasmine Sambac', category: 'heart', description: 'Sensual, intoxicating night-blooming white petals.', origin: 'Madurai, India', color: '#ecf0f1' },
+        { id: 'lor-heart-2', name: 'African Orange Flower', category: 'heart', description: 'Opulent, radiant, golden solar blossom.', origin: 'Morocco', color: '#f39c12' },
+        { id: 'lor-heart-3', name: 'Velvet Gardenia', category: 'heart', description: 'Lush, creamy aristocratic white flower.', origin: 'Tahiti', color: '#ffffff' }
+      ],
+      base: [
+        { id: 'lor-base-1', name: 'Pure White Honey', category: 'base', description: 'Warm nectar sweetness with velvety texture.', origin: 'Provence, France', color: '#d35400' },
+        { id: 'lor-base-2', name: 'Aged Patchouli', category: 'base', description: 'Earthy, dark woodiness grounding the sweetness.', origin: 'Sumatra, Indonesia', color: '#27ae60' },
+        { id: 'lor-base-3', name: 'Golden Amber Resin', category: 'base', description: 'Fossilized amber giving enduring golden warmth.', origin: 'Baltic Region', color: '#e67e22' }
+      ]
+    },
+    craftsmanshipDetails: {
+      title: 'Cold-Extracted Honey & White Floral Infusion',
+      description: 'Enfleurage and gentle acoustic extraction preserved over 180 days to retain the delicate nectar brilliance of morning-picked white blooms.',
+      macerationTime: '180 Days',
+      concentration: 'Extrait de Parfum (28%)',
+      artisan: 'Master Perfumer Camille Beauchamp'
+    },
+    inStock: true,
+    isComingSoon: false,
+    imageFallback: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 'vortex-imperial',
+    name: 'Vortex Impérial',
+    tagline: 'Electric Grapefruit & Smoky Ambrox Vetiver',
+    description: 'A high-voltage collision of crisp pink grapefruit and spicy fresh ginger, radiating with crystalline Ambroxan, botanical ambrette seeds, and smoky Bourbon vetiver roots.',
+    price: 390,
+    currency: 'AED',
+    volume: '100ml / 3.4 fl. oz.',
+    glassColor: '#0a161d',
+    liquidColor: '#00cec9',
+    accentColor: '#81ecec',
+    capColor: '#1a2e3b',
+    bgGradient: 'radial-gradient(circle at 50% 40%, rgba(0, 206, 201, 0.24) 0%, rgba(10, 22, 29, 0.95) 75%)',
+    roughness: 0.09,
+    transmission: 0.92,
+    ior: 1.51,
+    scentFamily: 'Citrus Woody Ambrox',
+    notes: {
+      top: [
+        { id: 'vor-top-1', name: 'Ruby Grapefruit', category: 'top', description: 'Crisp, bittersweet, effervescent citrus rush.', origin: 'Florida, USA', color: '#ff7675' },
+        { id: 'vor-top-2', name: 'Zesty Fresh Ginger', category: 'top', description: 'Fiery, spicy kick adding modern vibrancy.', origin: 'Nigeria', color: '#fdcb6e' }
+      ],
+      heart: [
+        { id: 'vor-heart-1', name: 'Crystalline Ambroxan', category: 'heart', description: 'Modern mineral ambergris radiance and aura.', origin: 'Molecular Luxury', color: '#74b9ff' },
+        { id: 'vor-heart-2', name: 'Botanical Ambrette', category: 'heart', description: 'Nutty, musky seed warmth with fruity nuance.', origin: 'Ecuador', color: '#d6a2e8' }
+      ],
+      base: [
+        { id: 'vor-base-1', name: 'Smoky Bourbon Vetiver', category: 'base', description: 'Earth-rooted aristocratic smoky wood anchor.', origin: 'Haiti', color: '#00b894' },
+        { id: 'vor-base-2', name: 'Velvet Cashmere Musk', category: 'base', description: 'Clean, sensual skin-scent warmth.', origin: 'Noble Accord', color: '#dfe6e9' }
+      ]
+    },
+    craftsmanshipDetails: {
+      title: 'Supercritical CO2 Botanical Extraction',
+      description: 'Ginger and vetiver roots extracted at low temperatures using pressurized fluid to capture true-to-nature smoky freshness without heat degradation.',
+      macerationTime: '240 Days',
+      concentration: 'Extrait de Parfum (30%)',
+      artisan: 'Master Perfumer Lucian Vance'
+    },
+    inStock: true,
+    isComingSoon: false,
+    imageFallback: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
     id: 'leviatur-signature',
     name: 'Leviatur Signature',
     tagline: 'Dark Resin & Smoked Amber Vanilla',
@@ -41,7 +128,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     },
     inStock: true,
     isComingSoon: false,
-    imageFallback: 'images/leviatur-signature.jpg'
+    imageFallback: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1200&q=80'
   },
   {
     id: 'rose-lavie',
@@ -83,7 +170,7 @@ export const PERFUME_VARIANTS: PerfumeVariant[] = [
     },
     inStock: true,
     isComingSoon: false,
-    imageFallback: 'images/rose-lavie.jpg'
+    imageFallback: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1200&q=80'
   },
   {
     id: 'velvet-oud',

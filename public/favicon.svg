@@ -1,4 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <circle cx="50" cy="50" r="48" fill="#0a0a0c" stroke="#d4af37" stroke-width="4"/>
-  <path d="M50 20 L58 40 L80 50 L58 60 L50 80 L42 60 L20 50 L42 40 Z" fill="#d4af37"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="favGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2B8" />
+      <stop offset="25%" stop-color="#F5D061" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="75%" stop-color="#B38018" />
+      <stop offset="100%" stop-color="#8C5E0D" />
+    </linearGradient>
+    <linearGradient id="favStroke" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C9981E" />
+      <stop offset="40%" stop-color="#FFF5C2" />
+      <stop offset="70%" stop-color="#E5BA42" />
+      <stop offset="100%" stop-color="#8C5E0D" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="300" rx="64" fill="#070709" />
+  <g transform="translate(-100, -32)">
+    {/* L Stem */}
+    <path d="M 125,75 L 190,75 L 190,83 L 174,83 L 174,235 L 242,235 L 242,224 L 252,224 L 252,246 L 125,246 L 125,235 L 139,235 L 139,83 L 125,83 Z" fill="url(#favGold)" stroke="url(#favStroke)" stroke-width="1.2" stroke-linejoin="round" />
+    {/* A Left */}
+    <path d="M 250,52 L 262,70 L 205,200 L 190,200 L 238,82 Z" fill="url(#favGold)" stroke="url(#favStroke)" stroke-width="1.2" stroke-linejoin="round" />
+    {/* A Right */}
+    <path d="M 250,52 L 260,65 L 326,235 L 345,235 L 347,246 L 300,246 L 302,235 L 314,235 L 268,130 L 246,75 Z" fill="url(#favGold)" stroke="url(#favStroke)" stroke-width="1.2" stroke-linejoin="round" />
+    {/* Facets */}
+    <g stroke="url(#favStroke)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <line x1="195" y1="126" x2="305" y2="126" />
+      <line x1="162" y1="172" x2="338" y2="172" stroke-width="4" />
+      <line x1="195" y1="126" x2="162" y2="172" />
+      <line x1="305" y1="126" x2="338" y2="172" />
+      <line x1="162" y1="172" x2="250" y2="265" stroke-width="4" />
+      <line x1="338" y1="172" x2="250" y2="265" stroke-width="4" />
+      <line x1="250" y1="52" x2="195" y2="126" stroke-width="3.6" />
+      <line x1="250" y1="52" x2="305" y2="126" stroke-width="3.6" />
+      <line x1="250" y1="52" x2="250" y2="126" stroke-width="3" />
+      <line x1="195" y1="126" x2="250" y2="172" stroke-width="3" />
+      <line x1="305" y1="126" x2="250" y2="172" stroke-width="3" />
+      <line x1="250" y1="172" x2="250" y2="265" stroke-width="3.6" />
+    </g>
+  </g>
 </svg>

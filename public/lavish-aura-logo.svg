@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 560" width="100%" height="100%">
+  <defs>
+    <!-- Rich 24K Luxury Gold Gradient -->
+    <linearGradient id="laGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3C4" />
+      <stop offset="20%" stop-color="#F3C664" />
+      <stop offset="45%" stop-color="#D4AF37" />
+      <stop offset="70%" stop-color="#AA771C" />
+      <stop offset="90%" stop-color="#F0D076" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+
+    <!-- Linear Gold Stroke Gradient -->
+    <linearGradient id="laGoldStroke" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C59B27" />
+      <stop offset="30%" stop-color="#FFE898" />
+      <stop offset="60%" stop-color="#E5B84C" />
+      <stop offset="100%" stop-color="#8A5A00" />
+    </linearGradient>
+
+    <!-- Subtle Golden Glow Filter -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <g id="emblem" transform="translate(0, 10)">
+    <!-- Serif Letter 'L' Structure -->
+    <!-- Top Serif of L -->
+    <polygon points="135,90 195,90 195,98 178,98 178,255 178,255 135,90" fill="none" />
+    
+    <!-- Bold L Serif Stem and Base -->
+    <path d="M 138,92 L 192,92 L 184,102 L 174,102 L 174,272 L 235,272 L 235,260 L 243,260 L 245,282 L 138,282 L 138,272 L 148,272 L 148,102 L 138,102 Z" 
+          fill="url(#laGoldGrad)" 
+          stroke="url(#laGoldStroke)" 
+          stroke-width="1.5" 
+          stroke-linejoin="round" />
+
+    <!-- Letter 'A' Right Leg & Top Apex -->
+    <path d="M 250,70 L 258,85 L 305,268 L 320,268 L 322,282 L 285,282 L 287,268 L 297,268 L 265,148 L 245,88 Z" 
+          fill="url(#laGoldGrad)" 
+          stroke="url(#laGoldStroke)" 
+          stroke-width="1.5" 
+          stroke-linejoin="round" />
+
+    <!-- A apex & left edge contour -->
+    <path d="M 250,70 L 238,105 L 225,148 L 235,148 L 250,88 Z" 
+          fill="url(#laGoldGrad)" 
+          stroke="url(#laGoldStroke)" 
+          stroke-width="1.5" />
+
+    <!-- Faceted Diamond Overlay & Intertwined Geometric Linework -->
+    <g stroke="url(#laGoldStroke)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- Diamond Outer Contour -->
+      <!-- Table Top -->
+      <line x1="182" y1="140" x2="318" y2="140" />
+      <!-- Upper Girdle Slopes -->
+      <line x1="182" y1="140" x2="155" y2="198" />
+      <line x1="318" y1="140" x2="345" y2="198" />
+      <!-- Main Girdle Horizontal Belt -->
+      <line x1="155" y1="198" x2="345" y2="198" stroke-width="4" />
+      <!-- Lower Pavilion Slopes converging to Culet Point -->
+      <line x1="155" y1="198" x2="250" y2="305" />
+      <line x1="345" y1="198" x2="250" y2="305" />
+
+      <!-- Internal Geometric Diamond Facets -->
+      <!-- Top Crown Triangular Lines -->
+      <line x1="250" y1="70" x2="182" y2="140" stroke-width="4" />
+      <line x1="250" y1="70" x2="318" y2="140" stroke-width="4" />
+      <line x1="250" y1="70" x2="250" y2="140" stroke-width="3.5" />
+
+      <!-- Crown Star / Cross Facet Lines -->
+      <line x1="182" y1="140" x2="250" y2="198" stroke-width="3.5" />
+      <line x1="318" y1="140" x2="250" y2="198" stroke-width="3.5" />
+      <line x1="216" y1="140" x2="155" y2="198" stroke-width="3" />
+      <line x1="284" y1="140" x2="345" y2="198" stroke-width="3" />
+
+      <!-- Lower Pavilion Facet Lines -->
+      <line x1="250" y1="198" x2="250" y2="305" stroke-width="4" />
+      <line x1="155" y1="198" x2="250" y2="250" stroke-width="3" />
+      <line x1="345" y1="198" x2="250" y2="250" stroke-width="3" />
+      <line x1="202" y1="198" x2="250" y2="305" stroke-width="3.5" />
+      <line x1="298" y1="198" x2="250" y2="305" stroke-width="3.5" />
+    </g>
+
+    <!-- Diamond Center Highlight Accents -->
+    <circle cx="250" cy="70" r="3" fill="#FFF8DC" />
+    <circle cx="250" cy="305" r="3.5" fill="#FFF8DC" />
+    <circle cx="155" cy="198" r="3" fill="#FFF8DC" />
+    <circle cx="345" cy="198" r="3" fill="#FFF8DC" />
+  </g>
+
+  <!-- Brand Typography: "LEVIATOR" -->
+  <text x="250" y="425" 
+        text-anchor="middle" 
+        font-family="'Cinzel', 'Playfair Display', 'Cormorant Garamond', serif" 
+        font-size="44" 
+        font-weight="700" 
+        letter-spacing="0.22em" 
+        fill="url(#laGoldGrad)">
+    LEVIATOR
+  </text>
+
+  <!-- Luxury Subtitle -->
+  <text x="250" y="468" 
+        text-anchor="middle" 
+        font-family="'Plus Jakarta Sans', 'Inter', sans-serif" 
+        font-size="14" 
+        font-weight="500" 
+        letter-spacing="0.38em" 
+        fill="#C59B27" 
+        opacity="0.9">
+    HAUTE PARFUMERIE
+  </text>
+</svg>

@@ -11,6 +11,12 @@
   --glass-border: rgba(255, 255, 255, 0.08);
 }
 
+/* Remove ugly blue browser default outlines across all buttons */
+button:focus, button:focus-visible, a:focus, a:focus-visible {
+  outline: none !important;
+  box-shadow: none;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

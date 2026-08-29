@@ -27,17 +27,7 @@ export const HeroSection: React.FC<SectionProps> = ({
         style={{ backgroundColor: activeVariant.liquidColor }}
       />
 
-      {/* WebGL Fallback Hero Image if WebGL is unsupported or low-tier device */}
-      {isFallbackMode && (
-        <div className="absolute inset-0 flex items-center justify-center z-0 opacity-40">
-          <img
-            src={getAssetPath(activeVariant.imageFallback)}
-            alt={activeVariant.name}
-            className="w-full h-full object-cover filter brightness-75 contrast-125"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-[#0a0a0c]" />
-        </div>
-      )}
+
 
       {/* Main Content Grid */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
