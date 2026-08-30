@@ -23,14 +23,14 @@ export const CartDrawer: React.FC = () => {
 
     let orderText = `✨ *LEVIATOR HAUTE PARFUMERIE — ORDER REQUEST* ✨\n`;
     orderText += `----------------------------------\n`;
-    
+
     if (customerName.trim()) {
       orderText += `👤 *Customer Name:* ${customerName.trim()}\n`;
     }
     if (phoneNumber.trim()) {
       orderText += `📞 *Phone:* ${phoneNumber.trim()}\n`;
     }
-    
+
     orderText += `\n🛍️ *ITEMS ORDERED:*\n`;
     items.forEach((item, index) => {
       orderText += `${index + 1}. *${item.variant.name}*\n`;

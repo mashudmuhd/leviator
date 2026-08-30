@@ -5,7 +5,7 @@ import { GlassCard } from '../components/ui/GlassCard';
 import { AnimatedSection } from '../components/animations/AnimatedSection';
 import { useCart } from '../hooks/useCart';
 import { ShoppingBag, Check, ShieldCheck, Truck, Gift, Lock, Sparkles, MessageCircle } from 'lucide-react';
-import { PERFUME_VARIANTS } from '../data/perfumeVariants';
+import { useProductStore } from '../stores/useProductStore';
 import { getAssetPath } from '../utils/assets';
 
 export const BuySection: React.FC<SectionProps> = ({
@@ -14,6 +14,7 @@ export const BuySection: React.FC<SectionProps> = ({
   onVariantChange,
 }) => {
   const { addItem } = useCart();
+  const variants = useProductStore((state) => state.variants);
   const [selectedVolume, setSelectedVolume] = useState<'100ml' | '50ml'>('100ml');
   const [isAdded, setIsAdded] = useState(false);
 
@@ -32,8 +33,8 @@ export const BuySection: React.FC<SectionProps> = ({
     window.open(`https://wa.me/971544478456?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  const activeProducts = PERFUME_VARIANTS.filter((v) => !v.isComingSoon);
-  const comingSoonProducts = PERFUME_VARIANTS.filter((v) => v.isComingSoon);
+  const activeProducts = variants.filter((v) => !v.isComingSoon);
+  const comingSoonProducts = variants.filter((v) => v.isComingSoon);
 
   return (
     <section
