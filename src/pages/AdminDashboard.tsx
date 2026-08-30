@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProductStore } from '../stores/useProductStore';
 import { PerfumeVariant, OlfactoryNote } from '../types';
 import { Button } from '../components/ui/Button';
@@ -8,7 +8,6 @@ import {
   Trash2,
   Edit3,
   Copy,
-  Download,
   Lock,
   Unlock,
   Sparkles,
@@ -18,14 +17,22 @@ import {
   ArrowLeft,
   X,
   Palette,
-  Layers,
   Image as ImageIcon,
   FlaskConical,
+  Database,
+  Cloud,
+  CheckCircle,
+  AlertCircle,
+  Code,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAssetPath } from '../utils/assets';
+import {
+  getSupabaseCredentials,
+  saveSupabaseCredentials,
+  isSupabaseConfigured,
+} from '../services/supabaseClient';
 
-// Default Master PIN for Admin access
 const ADMIN_PIN = '7788';
 
 const COLOR_PRESETS = [
@@ -38,27 +45,62 @@ const COLOR_PRESETS = [
 ];
 
 export const AdminDashboard: React.FC = () => {
-  const { variants, addVariant, updateVariant, deleteVariant, resetToDefaults, exportAsCode } =
-    useProductStore();
+  const {
+    variants,
+    isLoading,
+    isCloudConnected,
+    fetchLiveVariants,
+    addVariant,
+    updateVariant,
+    deleteVariant,
+    resetToDefaults,
+    exportAsCode,
+    syncLocalToCloud,
+  } = useProductStore();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedSql, setCopiedSql] = useState(false);
   const [editingVariant, setEditingVariant] = useState<PerfumeVariant | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [showCloudSettings, setShowCloudSettings] = useState(false);
+
+  // Cloud Config State
+  const [cloudUrl, setCloudUrl] = useState('');
+  const [cloudKey, setCloudKey] = useState('');
+  const [cloudSuccess, setCloudSuccess] = useState(false);
 
   // Form State
   const [formState, setFormState] = useState<Partial<PerfumeVariant>>({});
 
+  useEffect(() => {
+    const creds = getSupabaseCredentials();
+    setCloudUrl(creds.url);
+    setCloudKey(creds.anonKey);
+  }, []);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === ADMIN_PIN || pinInput.trim() === 'admin' || pinInput.trim() === 'leviator') {
+    if (
+      pinInput.trim() === ADMIN_PIN ||
+      pinInput.trim() === 'admin' ||
+      pinInput.trim() === 'leviator'
+    ) {
       setIsAuthenticated(true);
       setPinError(false);
     } else {
       setPinError(true);
     }
+  };
+
+  const handleSaveCloudConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveSupabaseCredentials(cloudUrl, cloudKey);
+    setCloudSuccess(true);
+    fetchLiveVariants();
+    setTimeout(() => setCloudSuccess(false), 3000);
   };
 
   const handleStartCreate = () => {
@@ -67,7 +109,8 @@ export const AdminDashboard: React.FC = () => {
       id: newId,
       name: 'New Haute Parfum',
       tagline: 'Rare Resins & Golden Scent',
-      description: 'Handcrafted luxury fragrance composed of natural oils and refined crystal flacon bottling.',
+      description:
+        'Handcrafted luxury fragrance composed of natural oils and refined crystal flacon bottling.',
       price: 80,
       currency: 'AED',
       volume: '100ml / 3.4 fl. oz.',
@@ -75,32 +118,56 @@ export const AdminDashboard: React.FC = () => {
       liquidColor: '#f39c12',
       accentColor: '#f1c40f',
       capColor: '#0a0a0d',
-      bgGradient: 'radial-gradient(circle at 50% 40%, rgba(243, 156, 18, 0.22) 0%, rgba(10, 10, 12, 0.95) 75%)',
+      bgGradient:
+        'radial-gradient(circle at 50% 40%, rgba(243, 156, 18, 0.22) 0%, rgba(10, 10, 12, 0.95) 75%)',
       roughness: 0.1,
       transmission: 0.9,
       ior: 1.52,
       scentFamily: 'Oriental Woody Gold',
       notes: {
         top: [
-          { id: `${newId}-t1`, name: 'Bergamot Zest', category: 'top', description: 'Crisp citrus sparkle', origin: 'Calabria, Italy', color: '#ffeaa7' },
+          {
+            id: `${newId}-t1`,
+            name: 'Bergamot Zest',
+            category: 'top',
+            description: 'Crisp citrus sparkle',
+            origin: 'Calabria, Italy',
+            color: '#ffeaa7',
+          },
         ],
         heart: [
-          { id: `${newId}-h1`, name: 'White Amber', category: 'heart', description: 'Warm luminous aura', origin: 'Baltic Coast', color: '#fab1a0' },
+          {
+            id: `${newId}-h1`,
+            name: 'White Amber',
+            category: 'heart',
+            description: 'Warm luminous aura',
+            origin: 'Baltic Coast',
+            color: '#fab1a0',
+          },
         ],
         base: [
-          { id: `${newId}-b1`, name: 'Smoked Vanilla', category: 'base', description: 'Dark sweet resin', origin: 'Madagascar', color: '#fdcb6e' },
+          {
+            id: `${newId}-b1`,
+            name: 'Smoked Vanilla',
+            category: 'base',
+            description: 'Dark sweet resin',
+            origin: 'Madagascar',
+            color: '#fdcb6e',
+          },
         ],
       },
       craftsmanshipDetails: {
         title: 'Artisanal Acoustic Extraction',
-        description: 'Macerated in darkened French cellars for unmatched depth and long-lasting sillage.',
+        description:
+          'Macerated in darkened French cellars for unmatched depth and long-lasting sillage.',
         macerationTime: '180 Days',
         concentration: 'Extrait de Parfum (30%)',
         artisan: 'Master Perfumer LEVIATOR',
       },
       inStock: true,
       isComingSoon: false,
-      imageFallback: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=80',
+      imageFallback:
+        'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=80',
     };
     setFormState(template);
     setIsCreating(true);
@@ -113,14 +180,14 @@ export const AdminDashboard: React.FC = () => {
     setIsCreating(false);
   };
 
-  const handleSaveForm = (e: React.FormEvent) => {
+  const handleSaveForm = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.id) return;
 
     if (isCreating) {
-      addVariant(formState as PerfumeVariant);
+      await addVariant(formState as PerfumeVariant);
     } else if (editingVariant) {
-      updateVariant(editingVariant.id, formState);
+      await updateVariant(editingVariant.id, formState);
     }
 
     setEditingVariant(null);
@@ -132,6 +199,42 @@ export const AdminDashboard: React.FC = () => {
     navigator.clipboard.writeText(code);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2500);
+  };
+
+  const handleCopySql = () => {
+    const sql = `CREATE TABLE IF NOT EXISTS public.perfumes (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  tagline TEXT,
+  description TEXT,
+  price NUMERIC NOT NULL DEFAULT 80,
+  currency TEXT DEFAULT 'AED',
+  volume TEXT DEFAULT '100ml / 3.4 fl. oz.',
+  glass_color TEXT DEFAULT '#1c140a',
+  liquid_color TEXT DEFAULT '#f39c12',
+  accent_color TEXT DEFAULT '#f1c40f',
+  cap_color TEXT DEFAULT '#0a0a0d',
+  bg_gradient TEXT,
+  roughness NUMERIC DEFAULT 0.1,
+  transmission NUMERIC DEFAULT 0.9,
+  ior NUMERIC DEFAULT 1.52,
+  scent_family TEXT DEFAULT 'Oriental Woody Gold',
+  notes JSONB DEFAULT '{"top":[], "heart":[], "base":[]}'::jsonb,
+  craftsmanship_details JSONB,
+  in_stock BOOLEAN DEFAULT true,
+  is_coming_soon BOOLEAN DEFAULT false,
+  image_fallback TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.perfumes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public Read Access" ON public.perfumes FOR SELECT USING (true);
+CREATE POLICY "Public Write Access" ON public.perfumes FOR ALL USING (true) WITH CHECK (true);
+ALTER PUBLICATION supabase_realtime ADD TABLE public.perfumes;`;
+    navigator.clipboard.writeText(sql);
+    setCopiedSql(true);
+    setTimeout(() => setCopiedSql(false), 2500);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,9 +253,9 @@ export const AdminDashboard: React.FC = () => {
   const addNote = (category: 'top' | 'heart' | 'base') => {
     const newNote: OlfactoryNote = {
       id: `note-${Date.now()}`,
-      name: 'New Rare Note',
+      name: 'New Note',
       category,
-      description: 'Subtle aromatic ingredient',
+      description: 'Aromatic ingredient',
       origin: 'Grasse, France',
       color: '#d4af37',
     };
@@ -238,10 +341,24 @@ export const AdminDashboard: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] uppercase font-bold tracking-widest">
-              Live Console
+            <span
+              className={`px-2.5 py-0.5 rounded-full border text-[10px] uppercase font-bold tracking-widest flex items-center gap-1.5 ${
+                isCloudConnected
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+              }`}
+            >
+              {isCloudConnected ? (
+                <>
+                  <CheckCircle className="w-3 h-3" /> Cloud Connected (Live for all)
+                </>
+              ) : (
+                <>
+                  <AlertCircle className="w-3 h-3" /> Local Mode (Free)
+                </>
+              )}
             </span>
-            <span className="text-xs text-neutral-400">100% Free Zero-Cost Storage</span>
+            <span className="text-xs text-neutral-400">100% Free Zero-Expense Storage</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
             Fragrance Catalog Atelier
@@ -262,6 +379,15 @@ export const AdminDashboard: React.FC = () => {
           </Button>
 
           <Button
+            variant={showCloudSettings ? 'primary' : 'glass'}
+            size="sm"
+            onClick={() => setShowCloudSettings(!showCloudSettings)}
+            icon={<Cloud className="w-4 h-4" />}
+          >
+            Cloud Setup
+          </Button>
+
+          <Button
             variant="glass"
             size="sm"
             onClick={handleCopyCode}
@@ -272,24 +398,118 @@ export const AdminDashboard: React.FC = () => {
 
           <Link to="/">
             <Button variant="outline" size="sm" icon={<Eye className="w-4 h-4" />}>
-              View Storefront
+              View Boutique
             </Button>
           </Link>
-
-          <Button
-            variant="glass"
-            size="sm"
-            onClick={() => {
-              if (confirm('Reset entire catalog to initial factory scents?')) {
-                resetToDefaults();
-              }
-            }}
-            icon={<RefreshCw className="w-3.5 h-3.5" />}
-          >
-            Reset
-          </Button>
         </div>
       </div>
+
+      {/* Cloud Database Setup Panel */}
+      {showCloudSettings && (
+        <GlassCard className="p-6 border-brand-gold/40 shadow-2xl space-y-4 relative overflow-hidden bg-black/80">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full border border-brand-gold/40 flex items-center justify-center bg-brand-gold/10 text-brand-gold">
+                <Database className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold text-white">
+                  100% Free Cloud Database Connection (Supabase)
+                </h3>
+                <p className="text-xs text-neutral-400">
+                  Connect free Supabase account so all products added from anywhere instantly go live for all users worldwide.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowCloudSettings(false)}
+              className="p-1.5 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <form onSubmit={handleSaveCloudConfig} className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+            <div className="sm:col-span-5">
+              <label className="text-[11px] uppercase font-bold text-neutral-300 block mb-1">
+                Supabase Project URL
+              </label>
+              <input
+                type="url"
+                value={cloudUrl}
+                onChange={(e) => setCloudUrl(e.target.value)}
+                placeholder="https://xyzproject.supabase.co"
+                className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold font-mono"
+                required
+              />
+            </div>
+
+            <div className="sm:col-span-4">
+              <label className="text-[11px] uppercase font-bold text-neutral-300 block mb-1">
+                Supabase Anon Key
+              </label>
+              <input
+                type="password"
+                value={cloudKey}
+                onChange={(e) => setCloudKey(e.target.value)}
+                placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold font-mono"
+                required
+              />
+            </div>
+
+            <div className="sm:col-span-3 flex gap-2">
+              <Button
+                type="submit"
+                variant="primary"
+                size="md"
+                className="w-full py-2.5 text-xs"
+                icon={cloudSuccess ? <Check className="w-4 h-4 text-black" /> : <CheckCircle className="w-4 h-4" />}
+              >
+                {cloudSuccess ? 'Connected!' : 'Save & Connect'}
+              </Button>
+            </div>
+          </form>
+
+          {/* Quick Helper */}
+          <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between text-xs text-neutral-400 gap-3">
+            <span>
+              Don't have Supabase yet? Create a free account at{' '}
+              <a
+                href="https://supabase.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-gold underline font-semibold"
+              >
+                supabase.com
+              </a>{' '}
+              (Zero cost forever).
+            </span>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleCopySql}
+                className="px-3 py-1.5 rounded-full border border-white/15 bg-white/5 text-neutral-300 hover:text-white flex items-center gap-1.5 text-xs"
+              >
+                <Code className="w-3.5 h-3.5 text-brand-gold" />
+                <span>{copiedSql ? 'SQL Script Copied!' : 'Copy Database SQL Script'}</span>
+              </button>
+
+              {isCloudConnected && (
+                <button
+                  type="button"
+                  onClick={syncLocalToCloud}
+                  className="px-3 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold"
+                >
+                  🚀 Upload All Scents to Cloud
+                </button>
+              )}
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       {/* Catalog Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -407,7 +627,7 @@ export const AdminDashboard: React.FC = () => {
                     {isCreating ? 'Create New Perfume Flacon' : `Edit ${formState.name}`}
                   </h2>
                   <p className="text-xs text-neutral-400">
-                    Live changes apply instantly to the boutique.
+                    Live changes apply instantly across the boutique.
                   </p>
                 </div>
               </div>
