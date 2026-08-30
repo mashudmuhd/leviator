@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Instagram, Twitter, Shield, Heart } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { LavishAuraLogo } from '../ui/LavishAuraLogo';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
@@ -89,9 +90,9 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-neutral-300 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-neutral-300 transition-colors">Terms of Service</a>
-            <a href="/leviator/admin" className="hover:text-brand-gold text-neutral-400 font-mono text-[11px] transition-colors flex items-center gap-1">
+            <Link to="/admin" className="hover:text-brand-gold text-neutral-400 font-mono text-[11px] transition-colors flex items-center gap-1">
               <span>🔒 Atelier Console</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
